@@ -7,10 +7,19 @@ class Training(models.Model):
         Employee,
         on_delete=models.CASCADE
     )
+
     training_name = models.CharField(max_length=100)
+    description=models.TextField(default="none")
     start_date = models.DateField()
     end_date = models.DateField()
-    status = models.CharField(max_length=20)
+    status = models.CharField(
+        max_length=20,
+         choices=[
+            ('ONGOING', 'Ongoing'),
+            ('COMPLETED', 'Completed'),
+        ]
+    
+    )
 
     def __str__(self):
-        return self.training_name
+        return f"{self.employee.name} - {self.training_name}"

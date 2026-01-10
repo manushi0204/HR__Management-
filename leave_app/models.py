@@ -2,16 +2,21 @@ from django.db import models
 from employees.models import Employee
 
 class Leave(models.Model):
-    employee=models.ForeignKey(
-        Employee,
-        on_delete=models.CASCADE
+    STATUS_CHOICES = (
+        ('PENDING', 'Pending'),
+        ('APPROVED', 'Approved'),
+        ('REJECTED', 'Rejected'),
     )
-    start_date=models.DateField()
-    end_date=models.DateField()
-    reason=models.TextField()
-    staus=models.CharField(max_length=20,default="pending")
+
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    reason = models.TextField()
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='PENDING'
+    )
 
     def __str__(self):
-        return f"{self.employee.name}-{self.status}"
-
-# Create your models here.
+        return f"{self.employee.name} - {self.start_date}"
