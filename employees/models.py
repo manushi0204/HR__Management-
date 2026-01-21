@@ -1,7 +1,10 @@
 from django.db import models
-from department.models import Department
+from department.models import Department 
+from users.models import User
+
 
 class Employee(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name=models.CharField(max_length=100)
     position=models.CharField(max_length=100)
     hire_date=models.DateField()

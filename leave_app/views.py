@@ -29,8 +29,15 @@ def leave_detail(request, id):
         serializer = LeaveSerializer(leave)
         return Response(serializer.data)
 
-    elif request.method == 'PUT':
-        serializer = LeaveSerializer(leave, data=request.data)
+    # HR ONLY from here
+    if request.user.role != 'HR':
+        return Response(
+            {"error": "Only HR can update or delete leave"},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+    if request.method == 'PUT':
+        serializer = LeaveSerializer(leave, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
